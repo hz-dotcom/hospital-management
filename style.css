@@ -1,0 +1,830 @@
+/* ==========================================================================
+   Healthcore Patient Portal Design System & Stylesheet
+   ========================================================================== */
+
+:root {
+    /* Color Palette */
+    --primary-color: #0284c7;
+    --primary-hover: #0369a1;
+    --primary-light: #e0f2fe;
+    --secondary-color: #0f172a;
+    --accent-teal: #0d9488;
+    --accent-teal-light: #ccfbf1;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+
+    /* Neutrals */
+    --bg-body: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-card-subtle: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --border-color: #e2e8f0;
+    --navbar-bg: #ffffff;
+
+    /* Shadows & Radius */
+    --card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
+    --hover-shadow: 0 20px 30px -10px rgba(2, 132, 199, 0.15);
+    --border-radius: 16px;
+    --border-radius-sm: 10px;
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Mode Variables */
+[data-theme="dark"] {
+    --bg-body: #000000;
+    --bg-card: #1c2541;
+    --bg-card-subtle: #111827;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --navbar-bg: #1c2541;
+    --primary-light: rgba(2, 132, 199, 0.2);
+    --accent-teal-light: rgba(13, 148, 136, 0.2);
+}
+
+[data-theme="dark"],
+[data-theme="dark"] body {
+    background-color: #000000 !important;
+}
+
+/* General Reset & Typography */
+html, body {
+    background-color: var(--bg-body);
+    color: var(--text-primary);
+    transition: background-color var(--transition-normal), color var(--transition-normal);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.manrope-800 { font-weight: 800; }
+.manrope-700 { font-weight: 700; }
+.manrope-600 { font-weight: 600; }
+.manrope-400 { font-weight: 400; }
+
+/* Navbar */
+.navbar-custom {
+    background-color: var(--navbar-bg);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    padding: 0.75rem 0;
+    transition: background-color var(--transition-normal);
+}
+
+.navbar-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.navbar-brand-custom {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--primary-color) !important;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-brand-custom span.logo-icon {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-teal));
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.nav-link-custom {
+    color: var(--text-secondary) !important;
+    font-weight: 600;
+    padding: 0.5rem 1rem !important;
+    border-radius: var(--border-radius-sm);
+    transition: all var(--transition-fast);
+    position: relative;
+    text-decoration: none;
+}
+
+.nav-link-custom:hover {
+    color: var(--primary-color) !important;
+    background-color: var(--primary-light);
+}
+
+.nav-link-custom.active {
+    color: var(--primary-color) !important;
+    background-color: var(--primary-light);
+    font-weight: 700;
+}
+
+.profile-dropdown-btn {
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-card-subtle);
+    color: var(--text-primary);
+    font-weight: 600;
+    border-radius: 30px;
+    padding: 6px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all var(--transition-fast);
+}
+
+.profile-dropdown-btn:hover, .profile-dropdown-btn:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+.user-avatar {
+    width: 28px;
+    height: 28px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.dropdown-menu-custom {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+}
+
+.dropdown-menu-custom .dropdown-item {
+    color: var(--text-primary);
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 500;
+    transition: background-color var(--transition-fast);
+}
+
+.dropdown-menu-custom .dropdown-item:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+}
+
+/* Page Layout */
+.main-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    width: 100%;
+    flex: 1;
+}
+
+/* Welcome Banner */
+.welcome-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0284c7 100%);
+    color: white;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+}
+
+.welcome-header::after {
+    content: "+";
+    position: absolute;
+    right: 4%;
+    bottom: -30px;
+    font-size: 14rem;
+    color: rgba(255, 255, 255, 0.04);
+    font-weight: 900;
+    pointer-events: none;
+}
+
+/* Card Grid & Custom Cards */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.75rem;
+    margin-bottom: 2rem;
+}
+
+.card-custom {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.card-custom:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--hover-shadow);
+    border-color: rgba(2, 132, 199, 0.3);
+}
+
+.card-header-custom {
+    background-color: transparent;
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.25rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-body-custom {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Appointment Widget */
+.appointment-date-badge {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    display: inline-block;
+    width: fit-content;
+    margin-bottom: 1rem;
+}
+
+.doctor-info-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 12px;
+    background-color: var(--bg-card-subtle);
+    border-radius: var(--border-radius-sm);
+}
+
+.doctor-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: var(--accent-teal);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* Queue Widget */
+.queue-box {
+    text-align: center;
+    padding: 0.5rem 0;
+}
+
+.queue-number-large {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--primary-color);
+    margin: 0.5rem 0;
+    text-shadow: 0 4px 10px rgba(2, 132, 199, 0.15);
+}
+
+.queue-badge-live {
+    background-color: #dcfce7;
+    color: #15803d;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #16a34a;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(22, 163, 74, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+}
+
+.queue-details {
+    display: flex;
+    justify-content: space-around;
+    padding: 12px;
+    background-color: var(--bg-card-subtle);
+    border-radius: var(--border-radius-sm);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* Buttons */
+.btn-primary-custom {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: var(--border-radius-sm);
+    transition: all var(--transition-fast);
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.btn-primary-custom:hover {
+    background-color: var(--primary-hover);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
+}
+
+.btn-outline-custom {
+    background-color: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: var(--border-radius-sm);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+
+.btn-outline-custom:hover {
+    background-color: var(--bg-card-subtle);
+    border-color: var(--text-muted);
+    color: var(--text-primary);
+}
+
+/* Medical Records Table/List */
+.records-table-container {
+    overflow-x: auto;
+}
+
+.records-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.records-table tr {
+    background-color: var(--bg-card-subtle);
+    transition: transform var(--transition-fast);
+}
+
+.records-table td, .records-table th {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.records-table td:first-child, .records-table th:first-child {
+    border-left: 1px solid var(--border-color);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.records-table td:last-child, .records-table th:last-child {
+    border-right: 1px solid var(--border-color);
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+/* Modals */
+.modal-content-custom {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    color: var(--text-primary);
+}
+
+.modal-header-custom {
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.25rem 1.5rem;
+}
+
+.modal-footer-custom {
+    border-top: 1px solid var(--border-color);
+    padding: 1rem 1.5rem;
+}
+
+/* Form Controls */
+.form-control-custom, .form-select-custom {
+    background-color: var(--bg-card-subtle);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: var(--border-radius-sm);
+    padding: 10px 14px;
+    width: 100%;
+}
+
+.form-control-custom:focus, .form-select-custom:focus {
+    background-color: var(--bg-card);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+    color: var(--text-primary);
+    outline: none;
+}
+
+/* Quick Action Tiles */
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.action-tile {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    padding: 1.25rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    color: var(--text-primary);
+    display: block;
+}
+
+.action-tile:hover {
+    border-color: var(--primary-color);
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.action-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Toast Notifications */
+.toast-container-custom {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1100;
+}
+
+.toast-custom {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 12px 20px;
+    border-radius: var(--border-radius-sm);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Footer */
+footer {
+    border-top: 1px solid var(--border-color);
+    background-color: var(--navbar-bg);
+    color: var(--text-muted);
+    padding: 1.5rem 0;
+    text-align: center;
+    margin-top: auto;
+    font-size: 0.9rem;
+}
+
+/* Admin Dashboard Specific Styles */
+.admin-badge {
+    background-color: #3b82f6;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.kpi-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--card-shadow);
+}
+
+.kpi-icon-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+}
+
+.table-search-bar {
+    max-width: 320px;
+}
+
+/* Comprehensive Dark Mode Overrides */
+[data-theme="dark"] .text-muted {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .text-dark {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .text-secondary {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .bg-light {
+    background-color: var(--bg-card-subtle) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .bg-white {
+    background-color: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .border,
+[data-theme="dark"] .border-start,
+[data-theme="dark"] .border-end,
+[data-theme="dark"] .border-top,
+[data-theme="dark"] .border-bottom {
+    border-color: var(--border-color) !important;
+}
+
+/* Modal Inner Boxes & Open Cards */
+[data-theme="dark"] .modal-content-custom {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .modal-content-custom .border,
+[data-theme="dark"] .modal-content-custom .rounded,
+[data-theme="dark"] .modal-content-custom .bg-light {
+    background-color: var(--bg-card-subtle) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Form Controls and Select Options */
+[data-theme="dark"] .form-control-custom,
+[data-theme="dark"] .form-select-custom,
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    background-color: var(--bg-card-subtle);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] select option,
+[data-theme="dark"] .form-select option {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .form-check-label {
+    color: var(--text-primary);
+}
+
+/* Alert Overrides in Dark Mode */
+[data-theme="dark"] .alert-info {
+    background-color: rgba(2, 132, 199, 0.18);
+    border-color: rgba(2, 132, 199, 0.35);
+    color: #7dd3fc;
+}
+
+[data-theme="dark"] .alert-success {
+    background-color: rgba(16, 185, 129, 0.18);
+    border-color: rgba(16, 185, 129, 0.35);
+    color: #6ee7b7;
+}
+
+[data-theme="dark"] .alert-warning {
+    background-color: rgba(245, 158, 11, 0.18);
+    border-color: rgba(245, 158, 11, 0.35);
+    color: #fcd34d;
+}
+
+/* Badges with light text in dark mode */
+[data-theme="dark"] .badge.bg-warning.text-dark,
+[data-theme="dark"] .badge.bg-info.text-dark {
+    color: #0f172a !important;
+}
+
+/* Table in Dark Mode */
+[data-theme="dark"] .records-table tr {
+    background-color: var(--bg-card-subtle);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .records-table th,
+[data-theme="dark"] .records-table td {
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+/* Horizontal Divider HR */
+[data-theme="dark"] hr,
+[data-theme="dark"] .dropdown-divider {
+    border-color: var(--border-color);
+    opacity: 0.25;
+}
+
+/* Dropdown Button (Profile Button) — Dark Mode */
+[data-theme="dark"] .profile-dropdown-btn {
+    background-color: var(--bg-card-subtle);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .profile-dropdown-btn:hover,
+[data-theme="dark"] .profile-dropdown-btn:focus,
+[data-theme="dark"] .profile-dropdown-btn.show {
+    background-color: var(--bg-card);
+    border-color: var(--primary-color);
+    color: var(--text-primary);
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25);
+}
+
+/* Dropdown Menu Panel — Dark Mode */
+[data-theme="dark"] .dropdown-menu-custom {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .dropdown-menu-custom .dropdown-item {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .dropdown-menu-custom .dropdown-item:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .dropdown-menu-custom .dropdown-item.active {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+}
+
+/* Override Bootstrap's default dropdown-menu background in dark mode */
+[data-theme="dark"] .dropdown-menu {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .dropdown-menu .dropdown-item {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .dropdown-menu .dropdown-item:hover,
+[data-theme="dark"] .dropdown-menu .dropdown-item:focus {
+    background-color: var(--primary-light) !important;
+    color: var(--primary-color) !important;
+}
+
+/* ============================================================
+   ADDITIONAL DARK MODE TEXT & ELEMENT OVERRIDES
+   ============================================================ */
+
+/* All general text inside cards/sections */
+[data-theme="dark"] .card-custom,
+[data-theme="dark"] .card-body-custom,
+[data-theme="dark"] .card-header-custom {
+    color: var(--text-primary);
+}
+
+/* Paragraph and span text inside cards */
+[data-theme="dark"] .card-custom p,
+[data-theme="dark"] .card-custom span,
+[data-theme="dark"] .card-custom small,
+[data-theme="dark"] .card-custom label,
+[data-theme="dark"] .card-custom strong,
+[data-theme="dark"] .card-custom h1,
+[data-theme="dark"] .card-custom h2,
+[data-theme="dark"] .card-custom h3,
+[data-theme="dark"] .card-custom h4,
+[data-theme="dark"] .card-custom h5,
+[data-theme="dark"] .card-custom h6 {
+    color: var(--text-primary);
+}
+
+/* Specifically the muted paragraph in appointment card */
+[data-theme="dark"] .card-custom p.text-secondary,
+[data-theme="dark"] .card-custom p.text-muted,
+[data-theme="dark"] .card-custom small.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Doctor info box text (Dr. Sarah Lee, dept label) */
+[data-theme="dark"] .doctor-info-box h6,
+[data-theme="dark"] .doctor-info-box small,
+[data-theme="dark"] .doctor-info-box p {
+    color: var(--text-primary) !important;
+}
+
+/* Queue card labels: "YOUR QUEUE TICKET", "Currently Serving", "Est. Wait Time" */
+[data-theme="dark"] .queue-box p,
+[data-theme="dark"] .queue-box small,
+[data-theme="dark"] .queue-details small,
+[data-theme="dark"] .queue-details p {
+    color: var(--text-muted) !important;
+}
+
+/* Outline buttons in dark mode */
+[data-theme="dark"] .btn-outline-custom {
+    color: var(--text-primary);
+    border-color: var(--border-color);
+    background-color: transparent;
+}
+
+[data-theme="dark"] .btn-outline-custom:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-card-subtle);
+    border-color: var(--text-muted);
+}
+
+/* Action tiles text */
+[data-theme="dark"] .action-tile strong,
+[data-theme="dark"] .action-tile small {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .action-tile small.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Main wrapper general text */
+[data-theme="dark"] .main-wrapper p,
+[data-theme="dark"] .main-wrapper span,
+[data-theme="dark"] .main-wrapper small,
+[data-theme="dark"] .main-wrapper strong {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .main-wrapper .text-muted,
+[data-theme="dark"] .main-wrapper small.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Live Queue Badge — Dark Mode */
+[data-theme="dark"] .queue-badge-live {
+    background-color: rgba(22, 163, 74, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(22, 163, 74, 0.35);
+}
