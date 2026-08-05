@@ -15,7 +15,7 @@ $DB_PASS = '';
 // this to your own secret and share it only with staff you're
 // onboarding (e.g. verbally, not over email).
 // ------------------------------------------------------------
-define('DOCTOR_INVITE_CODE', 'change-me-healthcore-staff-2026');
+define('DOCTOR_INVITE_CODE', 'healthcore2026');
 
 // ------------------------------------------------------------
 // Bookable time slots. This is the single source of truth for

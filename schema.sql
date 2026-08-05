@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 05, 2026 at 07:06 AM
+-- Generation Time: Aug 05, 2026 at 07:45 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -61,17 +61,6 @@ CREATE TABLE `appointments` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `appointments`
---
-
-INSERT INTO `appointments` (`id`, `patient_id`, `doctor_id`, `department`, `appt_date`, `appt_time`, `reason`, `status`, `ticket_number`, `created_at`) VALUES
-(2, 3, 1, 'Cardiology Department', '2026-08-21', '10:30 AM', 'i sakit', 'Cancelled', 68, '2026-08-05 01:15:54'),
-(3, 3, 3, 'Cardiology Department', '2026-08-28', '02:00 PM', '', 'Cancelled', 1, '2026-08-05 02:49:10'),
-(7, 3, 2, 'ENT Department', '2026-08-05', '02:00 PM', '', 'Completed', 1, '2026-08-05 03:30:42'),
-(8, 1, 2, 'ENT Department', '2026-08-05', '09:00 AM', '', 'Completed', 2, '2026-08-05 04:07:18'),
-(9, 1, 2, 'ENT Department', '2026-08-05', '10:30 AM', '', 'Completed', 3, '2026-08-05 04:15:56');
-
 -- --------------------------------------------------------
 
 --
@@ -110,10 +99,7 @@ CREATE TABLE `doctors` (
 --
 
 INSERT INTO `doctors` (`id`, `user_id`, `doctor_code`, `department`) VALUES
-(1, 2, 'DOC-882', 'Cardiology'),
-(2, 6, 'DR-22021', 'ENT'),
-(3, 7, 'DR-58567', 'Cardiology'),
-(4, 8, 'DR-97001', 'Neurology');
+(1, 2, 'DOC-882', 'Cardiology');
 
 -- --------------------------------------------------------
 
@@ -138,9 +124,7 @@ CREATE TABLE `medical_records` (
 
 INSERT INTO `medical_records` (`id`, `patient_id`, `doctor_id`, `title`, `notes`, `record_date`, `status`, `created_at`) VALUES
 (1, 1, 1, 'Comprehensive Blood Panel', 'All values within normal range.', '2026-01-24', 'Verified', '2026-08-05 01:10:51'),
-(2, 1, 1, 'ECG & Cardiology Evaluation', 'Sinus rhythm, no abnormalities detected.', '2025-12-10', 'Verified', '2026-08-05 01:10:51'),
-(3, 3, 1, 'sakit hati', 'tiada sebab', '2026-08-05', 'Verified', '2026-08-05 01:54:19'),
-(5, 3, 2, 'ent', 'ent', '2026-08-05', 'Under Review', '2026-08-05 03:36:19');
+(2, 1, 1, 'ECG & Cardiology Evaluation', 'Sinus rhythm, no abnormalities detected.', '2025-12-10', 'Verified', '2026-08-05 01:10:51');
 
 -- --------------------------------------------------------
 
@@ -170,8 +154,7 @@ CREATE TABLE `patients` (
 --
 
 INSERT INTO `patients` (`id`, `user_id`, `patient_code`, `dob`, `gender`, `blood_type`, `height_cm`, `weight_kg`, `address`, `emergency_name`, `emergency_phone`, `insurance_provider`, `insurance_policy_no`, `primary_doctor_id`) VALUES
-(1, 3, 'HC-99210', '1992-03-14', 'Male', 'A+', 178, 74, '742 Evergreen Terrace, Springfield, OR', 'Mary Doe', '+1 (555) 876-5432', 'Blue Cross Healthcare', 'BC-88392019-X', 1),
-(3, 5, 'HC-73483', NULL, 'Other', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(1, 3, 'HC-99210', '1992-03-14', 'Male', 'A+', 178, 74, '742 Evergreen Terrace, Springfield, OR', 'Mary Doe', '+1 (555) 876-5432', 'Blue Cross Healthcare', 'BC-88392019-X', 1);
 
 -- --------------------------------------------------------
 
@@ -193,7 +176,8 @@ CREATE TABLE `queue_state` (
 INSERT INTO `queue_state` (`id`, `department`, `currently_serving`, `updated_at`) VALUES
 (1, 'ENT', 1, '2026-08-05 04:41:18'),
 (2, 'Cardiology', 0, '2026-08-05 04:44:43'),
-(3, 'Neurology', 0, '2026-08-05 04:45:49');
+(3, 'Neurology', 0, '2026-08-05 04:45:49'),
+(4, 'Radiology', 0, '2026-08-05 05:21:05');
 
 -- --------------------------------------------------------
 
@@ -222,11 +206,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `role`, `full_name`, `email`, `password`, `phone`, `created_at`, `sms_notif`, `email_notif`, `lab_notif`, `two_factor`) VALUES
 (1, 'admin', 'Staff Admin', 'admin@healthcore.com', '$2y$10$WC2hYDil9KBNkXjhsI9wZ.OzrlcMKjpp9ESnRKIuGqL2hakIT5VzC', '+1 (555) 000-0001', '2026-08-05 01:10:51', 1, 1, 1, 0),
 (2, 'doctor', 'Dr. Sarah Lee', 'sarah.lee@healthcore.com', '$2y$10$WC2hYDil9KBNkXjhsI9wZ.OzrlcMKjpp9ESnRKIuGqL2hakIT5VzC', '+1 (555) 000-0002', '2026-08-05 01:10:51', 1, 1, 1, 0),
-(3, 'patient', 'John Doe', 'john.doe@example.com', '$2y$10$WC2hYDil9KBNkXjhsI9wZ.OzrlcMKjpp9ESnRKIuGqL2hakIT5VzC', '+1 (555) 234-5678', '2026-08-05 01:10:51', 1, 1, 1, 0),
-(5, 'patient', 'zhengyuan', 'zhengyuan@gmail.com', '$2y$10$3w3P3/UnDCfZ4Bg249EKK.3iTtChd0V3Xx9uCSH2P7Lc41PH4scT6', '012345678', '2026-08-05 01:15:23', 1, 1, 1, 0),
-(6, 'doctor', 'Zoih', 'Zoih@gmail.com', '$2y$10$OajZ/NbUS1AHxto/qtK.s.J1ojhTojbQ8VKujkpfcX7ZzjYcywmzy', '0124567890', '2026-08-05 02:40:21', 1, 1, 1, 0),
-(7, 'doctor', 'hongzhi ooi', 'ooihongzhi0322@gmail.com', '$2y$10$AxcIr.VDv0kD8PpFuHZjmewPL/1Bn70jyy7rvnRymBeysm5MO0tFW', '0124567890', '2026-08-05 02:46:28', 1, 1, 1, 0),
-(8, 'doctor', 'chin', 'chjin@mail.com', '$2y$10$r1F/Q1TghgGZMF67zSs3SOuvbGN6RprpTz0wYe.ZLoThaWLYEZLQW', '0124567890', '2026-08-05 04:45:34', 1, 1, 1, 0);
+(3, 'patient', 'John Doe', 'john.doe@example.com', '$2y$10$WC2hYDil9KBNkXjhsI9wZ.OzrlcMKjpp9ESnRKIuGqL2hakIT5VzC', '+1 (555) 234-5678', '2026-08-05 01:10:51', 1, 1, 1, 0);
 
 --
 -- Indexes for dumped tables
@@ -319,7 +299,7 @@ ALTER TABLE `conditions`
 -- AUTO_INCREMENT for table `doctors`
 --
 ALTER TABLE `doctors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `medical_records`
@@ -337,13 +317,13 @@ ALTER TABLE `patients`
 -- AUTO_INCREMENT for table `queue_state`
 --
 ALTER TABLE `queue_state`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables

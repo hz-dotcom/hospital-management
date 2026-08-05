@@ -1,169 +1,85 @@
-# Healthcore — PHP Backend Setup
+# 🏥 Healthcore — Hospital Management Portal
 
-## What's in this folder
-- `schema.sql` — creates the `healthcore` database and all tables
-- `db.php` — MySQL connection (edit credentials here)
-- `auth.php` — session/login helpers used by every protected page, plus CSRF token helpers (`csrf_field()` / `verify_csrf()`)
-- `login.php`, `register.php`, `logout.php` — authentication
-- `seed.php` — one-time script that creates demo accounts (delete after running)
-- `index.php` — patient dashboard
-- `profile.php` — patient profile
-- `settings.php` — account settings: notification preferences, password change, 2FA toggle — all persisted to the database
-- `admin.php` — staff/admin dashboard
-- `style.css`, `script.js` — front end
+A PHP + MySQL patient/staff portal with real-time appointment booking, per-department queue tracking, and role-based dashboards. No framework, no Composer, no build step — runs on plain Apache/PHP/MySQL (XAMPP-friendly).
 
-**The old static `admin.html` / `index.html` / `profile.html` / `settings.html` files have been removed.** They had no login check at all, so anyone who requested them directly could see the full staff admin UI (or a patient dashboard shell) without authenticating, and their "Logout" link didn't actually end a session. The `.php` versions are the only pages now — every one of them is gated by `auth.php`'s `require_role()`.
+---
 
-## 1. Install a local server stack
-Install **XAMPP** (or WAMP/MAMP) — it bundles Apache, PHP and MySQL together.
+## 🚀 Quick Start (5 minutes)
 
-## 2. Put the files in place
-Copy this whole folder into your server's web root, e.g.:
-```
-C:\xampp\htdocs\healthcore-php\      (Windows)
-/Applications/XAMPP/htdocs/healthcore-php/   (Mac)
-```
+| Step | What to do |
+|---|---|
+| 1 | Install **XAMPP** (or WAMP/MAMP) — bundles Apache, PHP and MySQL. |
+| 2 | Copy this whole folder into your web root: `C:\xampp\htdocs\healthcore-php\` (Windows) or `/Applications/XAMPP/htdocs/healthcore-php/` (Mac). |
+| 3 | Start **Apache** and **MySQL** in the XAMPP control panel. |
+| 4 | Open `http://localhost/phpmyadmin` → **Import** → select `schema.sql` → **Go**. This creates the `healthcore` database and imports the demo accounts (see table below) along with sample appointments, records, and queue data. |
+| 5 | Open `db.php` — defaults (`root` / no password / `localhost`) match a fresh XAMPP install. Only edit if yours differs. |
+| 6 | Log in at `http://localhost/healthcore-php/login.php`. |
 
-## 3. Create the database
-1. Start Apache **and** MySQL in the XAMPP control panel.
-2. Open `http://localhost/phpmyadmin`.
-3. Click **Import**, choose `schema.sql`, click **Go**.
-   This creates the `healthcore` database with empty tables.
+### Demo accounts (password: `password123` for all demo accounts)
 
-## 4. Check your DB credentials
-Open `db.php` — the defaults (`root` / no password / `localhost`) match
-a fresh XAMPP install. Change them if your MySQL setup is different.
+| Email | Role | Lands on |
+|---|---|---|
+| `admin@healthcore.com` | Admin | `admin.php` — full staff dashboard |
+| `sarah.lee@healthcore.com` | Doctor | `admin.php` — scoped to her department |
+| `john.doe@example.com` | Patient | `index.php` — patient dashboard |
 
-## 5. Create demo accounts
-Visit `http://localhost/healthcore-php/seed.php` in your browser once.
-It will print three login combinations, all using the password
-`password123`:
-- `admin@healthcore.com` (admin)
-- `sarah.lee@healthcore.com` (doctor — also uses admin.php)
-- `john.doe@example.com` (patient)
+New patients can also self-register at `register.php`. Self-registering as a doctor requires the staff invite code set in `db.php` (`DOCTOR_INVITE_CODE`).
 
-**Delete `seed.php` after this** — it refuses to run twice (it checks
-the users table is empty first), but it's good hygiene to remove it
-from a real server regardless.
+### 🎬 Suggested walkthrough (~2 min)
 
-## 6. Log in
-Go to `http://localhost/healthcore-php/login.php` and sign in.
-Patients land on `index.php`; admins/doctors land on `admin.php`.
-New patients can also self-register at `register.php`.
+1. Log in as **patient** → book an appointment → watch the live "waiting" queue widget.
+2. Log out, log in as **admin** → call the next ticket for that department, mark the appointment complete.
+3. The patient's queue widget updates within 5 seconds — no page refresh (polls `queue_status.php`).
 
-## How the login/role system works
-- Every user lives in one `users` table with a `role` column
-  (`patient`, `doctor`, `admin`).
-- `patients` and `doctors` tables hold role-specific extra fields and
-  link back to `users` via `user_id`.
-- `auth.php`'s `require_role([...])` guards each page — visiting
-  `admin.php` as a patient bounces you back to `index.php`, and
-  visiting any protected page while logged out bounces you to
-  `login.php`.
-- Passwords are stored with PHP's `password_hash()` / verified with
-  `password_verify()` — never in plain text.
-- Every form that changes data (login, register, book/cancel appointment,
-  profile edit, settings, and every admin action) includes a CSRF token via
-  `csrf_field()`, checked with `verify_csrf()` at the top of each POST
-  handler. This stops another website from silently submitting these forms
-  on a logged-in user's behalf.
-- The session cookie is set `HttpOnly` + `SameSite=Lax` in `auth.php`. Once
-  you serve this over HTTPS, uncomment the `'secure' => true` line in the
-  `session_set_cookie_params()` call there.
-- Outpatient ticket numbers reset per calendar day (scoped to
-  `appt_date`), so the queue counters don't drift upward forever as
-  appointments accumulate over time.
 
-## Notes on the conversion from your original HTML/JS
-Your original pages used `localStorage` + hardcoded arrays in
-`script.js` to fake data (appointments, queue numbers, records).
-The PHP versions now read/write real rows in MySQL instead. I kept
-`script.js` for the parts that are still purely cosmetic (theme
-toggle, navbar scroll-spy, toast notifications, the client-side
-record search box) and removed the JS's hooks into forms that now
-submit for real (booking, cancelling, editing profile, calling the
-next ticket, adding records, marking appointments complete) — those
-go through normal PHP form submissions now, so refreshing the page
-always shows the real database state, not a cached local copy.
 
-## Known decorative stubs
-Two buttons on the patient dashboard are intentionally cosmetic and don't
-hit the database: "📥 Export All (PDF)" (just shows a toast, no real file
-is generated) and "💊 Refill Rx" (there's no prescriptions table yet). Ask
-if you want either built out for real.
+Something not working? Jump to **[Troubleshooting](#-troubleshooting)**.
 
-## If you already imported the old `schema.sql`
-The `users` table now has four extra columns (`sms_notif`, `email_notif`,
-`lab_notif`, `two_factor`) used by `settings.php`. If your database already
-exists, run this once in phpMyAdmin's SQL tab instead of re-importing everything:
-```sql
-ALTER TABLE users
-  ADD COLUMN sms_notif   TINYINT(1) NOT NULL DEFAULT 1,
-  ADD COLUMN email_notif TINYINT(1) NOT NULL DEFAULT 1,
-  ADD COLUMN lab_notif   TINYINT(1) NOT NULL DEFAULT 1,
-  ADD COLUMN two_factor  TINYINT(1) NOT NULL DEFAULT 0;
-```
+---
 
-`queue_state` also changed shape — it used to be a single row (`id=1`)
-for the whole hospital and is now one row per department (see "Per-
-department queues" below). If your database already has the old
-single-row version, run this instead of re-importing everything:
-```sql
-DROP TABLE queue_state;
-CREATE TABLE queue_state (
-    id                 INT AUTO_INCREMENT PRIMARY KEY,
-    department         VARCHAR(100) NOT NULL UNIQUE,
-    currently_serving  INT NOT NULL DEFAULT 0,
-    updated_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-CREATE INDEX idx_appt_doctor_date_time ON appointments (doctor_id, appt_date, appt_time);
-```
-(Dropping and recreating is safe here — the old table only ever held a
-live counter, no historical data worth preserving. New department rows
-get created automatically the first time each department's queue is
-touched, so you don't need to seed them by hand.)
+## 📁 Project structure
 
-## New: Doctor time-slot management (no more double-booking)
-- `get_slots.php` is a small AJAX endpoint: given a `doctor_id` and
-  `appt_date`, it returns which of the bookable slots (defined once, in
-  `APPT_SLOTS` in `db.php`) are already taken for that doctor that day.
-- The booking form in `index.php` calls it whenever the physician or
-  date changes, and disables already-booked slots in the dropdown.
-- That's just the UI convenience — the real guard is server-side:
-  `index.php`'s `book_appointment` handler locks (`SELECT ... FOR
-  UPDATE`) any existing appointment for that doctor/date/time inside a
-  transaction before inserting, so two people booking the exact same
-  slot at the same moment can't both succeed, even if they bypass the
-  JS entirely.
-- This is still same-day fixed slots (`APPT_SLOTS`), not a real
-  calendar/availability system — a doctor can't yet mark themselves
-  unavailable on a given day, and there's no per-doctor working-hours
-  configuration. That would be the next step if you want to go further.
+| File | Purpose |
+|---|---|
+| `schema.sql` | Creates the `healthcore` database, all tables, and the demo accounts/sample data |
+| `db.php` | MySQL connection + shared config (edit credentials here) |
+| `auth.php` | Session/login helpers + CSRF protection (`csrf_field()` / `verify_csrf()`) |
+| `login.php` / `register.php` / `logout.php` | Authentication |
+| `index.php` | Patient dashboard — book/cancel appointments, queue status, records |
+| `profile.php` | Patient profile |
+| `settings.php` | Notification prefs, password change, 2FA toggle |
+| `admin.php` | Staff/admin dashboard — appointments, queue control, records |
+| `get_slots.php` | AJAX: which appointment slots are free for a doctor/date |
+| `queue_status.php` | AJAX: live per-department queue numbers (polled every 5s) |
+| `queue_helpers.php` | Shared queue read/write logic used by every page |
+| `style.css` / `script.js` | Front end |
 
-## New: Per-department queues
-- `queue_state` now holds **one row per department** instead of a
-  single global row — see the migration note above if you're upgrading.
-- `queue_helpers.php` is the one place that reads/writes `queue_state`;
-  every page goes through it so they can't disagree with each other.
-- Ticket numbers now reset **per department per day** rather than one
-  hospital-wide counter, so e.g. Cardiology and Neurology both get to
-  start at ticket #1 on the same morning.
-- `admin.php`'s Queue Controller now shows one card per department: a
-  doctor only ever sees and controls their own department's card; an
-  admin sees a card for every department that currently has a doctor
-  assigned, and can call/reset each independently.
-- `queue_status.php` (the JSON endpoint the browser polls every 5s)
-  now takes a `?department=` parameter. A patient's own department is
-  always derived server-side from their upcoming appointment (never
-  trusted from the query string); a doctor's is always forced to their
-  own department; only an admin's request can ask for any department.
+> **Note:** Each `.php` page (e.g. `login.php`, `index.php`, `admin.php`, `settings.php`) already contains its own HTML markup inline — the PHP logic and the page's HTML output live in the same file, so there's no separate `.html` template to copy or edit.
 
-## If something doesn't work
-- **"Database connection failed"** → check `db.php` credentials and
-  that MySQL is running in XAMPP.
-- **Blank white page** → open XAMPP's PHP error log, or temporarily
-  add `ini_set('display_errors', 1); error_reporting(E_ALL);` at the
-  very top of the file that's failing.
-- **"No patient profile found"** → you're logged in as a user whose
-  role is patient but who has no row in the `patients` table (this
-  shouldn't happen if you used `register.php` or `seed.php`).
+> **Security note:** the old static `admin.html` / `index.html` / `profile.html` / `settings.html` files have been removed. They had no login check — anyone could view the staff admin UI directly, and "Logout" didn't end a session. The `.php` pages are now the only versions, and every one is gated by `auth.php`'s `require_role()`.
+
+---
+
+## 🔐 How the login/role system works
+
+- One `users` table with a `role` column (`patient`, `doctor`, `admin`); `patients` and `doctors` tables hold role-specific fields linked via `user_id`.
+- `auth.php`'s `require_role([...])` guards every protected page — wrong role bounces you to your own dashboard, logged-out bounces you to `login.php`.
+- Passwords use PHP's `password_hash()` / `password_verify()` — never stored in plain text.
+- Every data-changing form (login, register, book/cancel, profile, settings, admin actions) is protected by a CSRF token (`csrf_field()` + `verify_csrf()`), so another site can't silently submit forms on a logged-in user's behalf.
+- The session cookie is `HttpOnly` + `SameSite=Lax`. Once served over HTTPS, uncomment `'secure' => true` in `auth.php`'s `session_set_cookie_params()`.
+- Ticket numbers reset per calendar day, so queue counters never drift upward forever.
+
+---
+
+
+## 🆘 Troubleshooting
+
+| Symptom | Fix |
+|---|---|
+| **"Database connection failed"** | Check `db.php` credentials and confirm MySQL is running in XAMPP. |
+| **Blank white page** | Check XAMPP's PHP error log, or temporarily add `ini_set('display_errors', 1); error_reporting(E_ALL);` to the top of the failing file. |
+| **"No patient profile found"** | You're logged in as a `patient`-role user with no row in the `patients` table — shouldn't happen via `register.php`. |
+
+---
+
+© 2026 Healthcore Hospital Management System
