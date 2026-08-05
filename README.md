@@ -1,6 +1,6 @@
 # 🏥 Healthcore — Hospital Management Portal
 
-A PHP + MySQL patient/staff portal with real-time appointment booking, per-department queue tracking, and role-based dashboards. No framework, no Composer, no build step — runs on plain Apache/PHP/MySQL (XAMPP-friendly).
+A PHP + MySQL patient/staff portal with real-time appointment booking, per-department queue tracking, and role-based dashboards. No framework, no Composer, no build step — runs on plain Apache/PHP/MySQL (XAMPP-friendly).(HTML INCLUDED IN PHP FILE)
 
 ---
 
